@@ -1,41 +1,46 @@
+
+
 public class Solution {
-    public int RomanToInt(string s) {
-        Dictionary<string, int> dic = new Dictionary<string, int>();
-        dic.Add("I", 1);
-        dic.Add("V", 5);
-        dic.Add("X", 10);
-        dic.Add("L", 50);
-        dic.Add("C", 100);
-        dic.Add("D", 500);
-        dic.Add("M", 1000);
+    public int RomanToInt ( string s )
+    {
+        char [ ] array = s.ToArray();
+        int sum = 0;
 
-        char [ ] cha = s.ToArray();
-        string [ ] array = cha.Select(a => a.ToString()).ToArray();
-        int answer = 0;
-        for(int i = 0; i < array.Length; i++)
+        for ( int i = 0; i < array.Length - 1; i++ )
         {
-            int val = dic.FirstOrDefault(a => a.Key == array[i]).Value;
-            if(i == array.Length - 1)
-            {
-                answer += val;
-                continue;
-            }
-            if(array[i] == "I"
-                || array[i] == "X"
-                || array[i] == "C")
-            {
-                int nextVal = dic.FirstOrDefault(a => a.Key == array[i + 1]).Value;
+            int value = returnNumber(array [ i ]);
+            int nextValue = returnNumber(array [ i + 1 ]);
 
-                if(val * 5 == nextVal
-                    || val * 10 == nextVal)
-                {
-                    answer += nextVal - val;
-                    i++;
-                    continue;
-                }
+            if ( value < nextValue )
+            {
+                sum -= value;
             }
-            answer += val;
+            else
+            {
+                sum += value;
+            }
         }
-        return answer;
+        return sum + returnNumber(array [ array.Length - 1 ]);
+    }
+
+    public int returnNumber(char str)
+    {
+        switch ( str )
+        {
+            case 'I':
+                return 1;
+            case 'V':
+                return 5;
+            case 'X':
+                return 10;
+            case 'L':
+                return 50;
+            case 'C':
+                return 100;
+            case 'D':
+                return 500;
+            default:
+                return 1000;
+        }
     }
 }
