@@ -1,34 +1,27 @@
 public class Solution {
     public bool IsValid(string s) {
-        string answer = string.Empty;
-        Dictionary<string, string> map = new Dictionary<string, string>();
-        map.Add("(", ")");
-        map.Add("{", "}");
-        map.Add("[", "]");
-
+        Stack<string> map = new Stack<string>();
         for(int i = 0; i < s.Length; i++)
         {
-            if(!map.ContainsValue(s[i].ToString()))
+            switch(s[i].ToString())
             {
-                answer += s[i].ToString();
-                continue;
+                case "(":
+                    map.Push(")");
+                    break;
+                case "{":
+                    map.Push("}");
+                    break;
+                case "[":
+                    map.Push("]");
+                    break;
+                default:
+                    if( map.Count == 0 || map.Pop() != s [ i ].ToString())
+                    {
+                        return false;
+                    }
+                    break;
             }
-            if(answer.Length == 0)
-            {
-                return false;
-            }
-            string firstValue = answer.Substring(answer.Length - 1, 1);
-            if(map.FirstOrDefault(a => a.Value == s[i].ToString()).Key == firstValue)
-            {
-                answer = answer.Remove(answer.Length - 1, 1);
-                continue;
-            }
-            return false;
         }
-        if(answer.Length != 0)
-        {
-            return false;
-        }
-        return true;
+        return map.Count == 0;
     }
 }
